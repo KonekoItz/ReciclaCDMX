@@ -1,32 +1,34 @@
 # ReciclaCDMX
-Portal web exclusivo orientado a fomentar la economía circular y el upcycling mediante el intercambio y reubicación de piezas de moda, artículos del hogar y accesorios para mascotas en perfecto estado dentro de la Ciudad de México.
+Portal web orientado a concentrar y organizar información sobre opciones de reciclaje, separación de residuos y centros de acopio en la Ciudad de México.
 
 ## Versión
-0.1.0
+0.2.0
 
 ## Tecnologías
-HTML5, CSS3
+HTML5, CSS3, PHP
 
 ## Requisitos
-Navegador web moderno (Chrome, Firefox, Safari, Edge).
+Servidor local con soporte PHP (ej. XAMPP) y un navegador web moderno.
 
 ## Ejecución
-Abrir el archivo index.html directamente en el navegador.
+Colocar la carpeta del proyecto en el directorio raíz del servidor local (htdocs) y acceder a través de localhost/ReciclaCDMX.
 
 ## Estructura
 - /css: Contiene la hoja de estilos principal (style.css).
-- index.html: Página principal (Inicio).
-- consulta.html: Catálogo de categorías (Moda, Hogar, Mascotas).
-- detalle.html: Vista detallada de un artículo específico.
-- guia.html: Guía de calidad y selección de artículos (Sección adicional).
+- /img: Contiene los recursos visuales del portal.
+- index.php: Página principal (Inicio) con contenido dinámico.
+- consulta.php: Catálogo de centros de acopio y materiales.
+- detalle.php: Vista detallada de un centro de reciclaje específico.
+- guia.php: Guía de separación de residuos sólidos.
 
 ## Funcionalidades actuales
-Estructura visual estática con diseño responsivo básico y navegación funcional entre las 4 secciones principales.
+Estructura visual responsiva, navegación funcional, corrección de estilos y primera integración de código PHP (variables, arreglos, foreach y condicionales).
 
 ## Estado
-Fase 1 - Versión estructural estática.
+Fase 1 - Tarea 2 (Integración inicial con PHP).
 
 ## Historial de versiones
 | Versión | Cambios principales |
 |---------|---------------------|
-| 0.1.0   | Creación de la estructura base HTML5, paleta de colores chic (CSS3) y navegación estática. |
+| 0.2.0   | Migración a PHP, implementación de contenido dinámico (arreglos, condicionales), corrección de etiqueta viewport, adición de imágenes y eliminación de CSS en línea. |
+| 0.1.0   | Creación de la estructura base HTML5 y navegación estática. |
