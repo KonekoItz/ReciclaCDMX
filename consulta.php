@@ -36,25 +36,37 @@
                         "nombre" => "Punto Verde Benito Juárez",
                         "materiales" => "PET, Cartón, Aluminio",
                         "horario" => "9:00 hrs - 17:00 hrs",
-                        "abierto" => true
+                        "abierto" => true,
+                        "direccion" => "Av. División del Norte 1421, Sta Cruz Atoyac",
+                        "telefono" => "55-8923-1100",
+                        "enlace_mapa" => "#"
                     ],
                     [
                         "nombre" => "Acopio Ecológico Coyoacán",
                         "materiales" => "Electrónicos, Pilas, Cables",
                         "horario" => "10:00 hrs - 16:00 hrs",
-                        "abierto" => true
+                        "abierto" => true,
+                        "direccion" => "Av. Coyoacán 123, Coyoacán",
+                        "telefono" => "55-1234-5678",
+                        "enlace_mapa" => "#"
                     ],
                     [
                         "nombre" => "Centro Limpio Cuauhtémoc",
                         "materiales" => "Vidrio, Papel periódico",
                         "horario" => "8:00 hrs - 14:00 hrs",
-                        "abierto" => false
+                        "abierto" => false,
+                        "direccion" => "Eje 1 Norte y Peralvillo, Col. Morelos",
+                        "telefono" => "55-3321-7766",
+                        "enlace_mapa" => "#"
                     ],
                     [
                         "nombre" => "Planta de Composta Tlalpan",
                         "materiales" => "Residuos Orgánicos",
                         "horario" => "7:00 hrs - 15:00 hrs",
-                        "abierto" => true
+                        "abierto" => true,
+                        "direccion" => "Camino a Santa Teresa S/N, Bosque de Tlalpan",
+                        "telefono" => "55-9988-2233",
+                        "enlace_mapa" => "#"
                     ]
                 ];
 
@@ -64,6 +76,9 @@
                     echo "<h3 style='margin-top: 0; color: #2e7d32;'>" . $centro['nombre'] . "</h3>";
                     echo "<p><strong>Recibe:</strong> " . $centro['materiales'] . "</p>";
                     echo "<p><strong>Horarios:</strong> " . $centro['horario'] . "</p>";
+                    echo "<p><strong>Dirección:</strong> " . $centro['direccion'] . "</p>";
+                    echo "<p><strong>Teléfono:</strong> " . $centro['telefono'] . "</p>";
+                    echo "<p><strong>Mapa:</strong> <a href='" . $centro['enlace_mapa'] . "' target='_blank'>Ver en el mapa</a></p>";
 
                     // Integración PHP: if/else para mostrar estado de apertura
                     if ($centro['abierto']) {

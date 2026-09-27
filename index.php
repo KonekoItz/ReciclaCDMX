@@ -28,7 +28,9 @@
 
         <section>
             <h2>Bienvenido a ReciclaCDMX</h2>
-            <p>Nuestra misión es facilitar la correcta disposición de residuos sólidos, orgánicos e inorgánicos. Aquí encontrarás los centros de acopio más cercanos y programas activos en tu alcaldía.</p>
+            <p>Nuestra misión es facilitar la correcta disposición de residuos sólidos, orgánicos e inorgánicos. </p> 
+            <p> La contaminación del medio ambiente es un tema muy importante y grave que se trata en nuestros días. Todo el mundo es el foco de este problema y que es un acontecimiento mundial, que todos debemos ser partícipes. Uno de los principales problemas que tenemos concernientes a la contaminación es los desechos y residuos de basura que dejamos.</p>
+            <p> <h3> Aquí encontrarás los centros de acopio más cercanos y programas activos en tu alcaldía visita todas las secciones </h3></p>
             <img src="https://cdn-icons-png.flaticon.com/512/11222/11222229.png" alt="Separación de residuos en CDMX" class="img-responsiva">
             <p><em>Reciclar te convierte en una mejor persona y ayudas mucho al medio ambiente</em></p>
         </section>
