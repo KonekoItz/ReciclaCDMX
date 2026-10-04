@@ -1,3 +1,30 @@
+<?php
+// 1. Declaración de variables 
+$tituloListado = "Especificaciones por Material";
+
+$materiales = [
+    [
+        "tipo" => "PET (Plástico tipo 1)",
+        "instrucciones" => "Enjuagar, aplastar y cerrar con su tapa.",
+        "altaDemanda" => true
+    ],
+    [
+        "tipo" => "Cartón y Papel",
+        "instrucciones" => "Desarmar cajas, no mojar y amarrar en paquetes.",
+        "altaDemanda" => false
+    ],
+    [
+        "tipo" => "Vidrio",
+        "instrucciones" => "Separar por color (transparente, verde, ámbar). No romper.",
+        "altaDemanda" => false
+    ],
+    [
+        "tipo" => "Electrónicos",
+        "instrucciones" => "Entregar completos, no extraer piezas internas (cobre, oro).",
+        "altaDemanda" => true
+    ]
+];
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -17,6 +44,7 @@
         <a href="consulta.php">Centros de Acopio</a>
         <a href="detalle.php">Materiales</a>
         <a href="guia.php">Guía de Separación</a>
+        <a href="recoleccion.php">Recolección a Domicilio</a>
     </nav>
 
     <main>
@@ -27,57 +55,25 @@
             <img src="https://cdn-icons-png.flaticon.com/512/11222/11222178.png" alt="Materiales separados" class="img-responsiva">
         </section>
 
-        <!-- Segundo bloque de contenido -->
+        <!-- Segundo bloque de contenido (HTML limpio) -->
         <section>
-            <?php
-                // Integración PHP: Arreglo de 4 elementos con detalles de materiales
-                $materiales = [
-                    [
-                        "tipo" => "PET (Plástico tipo 1)",
-                        "instrucciones" => "Enjuagar, aplastar y cerrar con su tapa.",
-                        "altaDemanda" => true
-                    ],
-                    [
-                        "tipo" => "Cartón y Papel",
-                        "instrucciones" => "Desarmar cajas, no mojar y amarrar en paquetes.",
-                        "altaDemanda" => false
-                    ],
-                    [
-                        "tipo" => "Vidrio",
-                        "instrucciones" => "Separar por color (transparente, verde, ámbar). No romper.",
-                        "altaDemanda" => false
-                    ],
-                    [
-                        "tipo" => "Electrónicos",
-                        "instrucciones" => "Entregar completos, no extraer piezas internas (cobre, oro).",
-                        "altaDemanda" => true
-                    ]
-                ];
-
-                // Integración PHP: Uso de variable para el título del listado
-                $tituloListado = "Especificaciones por Material";
-                echo "<h3>" . $tituloListado . "</h3>";
-                echo "<ul>";
-
-                // Integración PHP: foreach para generar la lista de materiales
-                foreach ($materiales as $item) {
-                    echo "<li style='margin-bottom: 10px;'>";
-                    echo "<strong>" . $item['tipo'] . ":</strong> " . $item['instrucciones'];
-                    
-                    // Integración PHP: if para destacar materiales de alta demanda
-                    if ($item['altaDemanda']) {
-                        echo " <span style='color: white; background-color: #d32f2f; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem;'>¡Alta Demanda!</span>";
-                    }
-                    
-                    echo "</li>";
-                }
-                echo "</ul>";
-            ?>
+            <h3><?php echo $tituloListado; ?></h3>
+            <ul>
+                <?php foreach ($materiales as $item): ?>
+                    <li style="margin-bottom: 10px;">
+                        <strong><?php echo $item['tipo']; ?>:</strong> <?php echo $item['instrucciones']; ?>
+                        
+                        <?php if ($item['altaDemanda']): ?>
+                            <span style="color: white; background-color: #d32f2f; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem;">¡Alta Demanda!</span>
+                        <?php endif; ?>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
         </section>
     </main>
 
     <footer>
-        <p>&copy; <?php echo date("Y"); ?> ReciclaCDMX - By Koneko </p>
+        <p>&copy; <?php echo date("Y"); ?> ReciclaCDMX - By Koneko</p>
     </footer>
 </body>
 </html>

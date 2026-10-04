@@ -1,3 +1,12 @@
+<?php
+// 1. Declaración de variables 
+$categoriasBasura = [
+    "Orgánicos" => "Verde",
+    "Inorgánicos Reciclables" => "Gris",
+    "Inorgánicos No Reciclables" => "Naranja",
+    "Manejo Especial y Voluminosos" => "Café"
+];
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -17,6 +26,7 @@
         <a href="consulta.php">Centros de Acopio</a>
         <a href="detalle.php">Materiales</a>
         <a href="guia.php">Guía de Separación</a>
+        <a href="recoleccion.php">Recolección a Domicilio</a>
     </nav>
 
     <main>
@@ -26,21 +36,13 @@
             <p>En la Ciudad de México es obligatorio separar la basura. Aprende a identificar los colores y clasificaciones de los botes recolectores.</p>
         </section>
 
-        <!-- Segundo bloque de contenido -->
+        <!-- Segundo bloque de contenido (HTML) -->
         <section>
             <div style="display: flex; flex-wrap: wrap; gap: 15px;">
-            <?php
-                // Integración PHP: Arreglo de 4 elementos con las categorías oficiales de basura en CDMX
-                $categoriasBasura = [
-                    "Orgánicos" => "Verde",
-                    "Inorgánicos Reciclables" => "Gris",
-                    "Inorgánicos No Reciclables" => "Naranja",
-                    "Manejo Especial y Voluminosos" => "Café"
-                ];
-
-                // Integración PHP: Recorrido del arreglo para pintar tarjetas de colores
-                foreach ($categoriasBasura as $categoria => $color) {
-                    // Integración PHP: if/else múltiple para asignar el código HEX según el color
+            <?php foreach ($categoriasBasura as $categoria => $color): ?>
+                
+                <?php 
+                    // Lógica condicional separada del HTML
                     $hex = "#ccc";
                     if ($color == "Verde") {
                         $hex = "#81c784";
@@ -51,19 +53,21 @@
                     } elseif ($color == "Café") {
                         $hex = "#a1887f";
                     }
+                ?>
+                
+                <!-- Tarjeta -->
+                <div style="background-color: <?php echo $hex; ?>; padding: 20px; border-radius: 8px; flex: 1; min-width: 200px; text-align: center; color: #fff; font-weight: bold;">
+                    <h4><?php echo $categoria; ?></h4>
+                    <p>Bote Color <?php echo $color; ?></p>
+                </div>
 
-                    echo "<div style='background-color: $hex; padding: 20px; border-radius: 8px; flex: 1; min-width: 200px; text-align: center; color: #fff; font-weight: bold;'>";
-                    echo "<h4>$categoria</h4>";
-                    echo "<p>Bote Color $color</p>";
-                    echo "</div>";
-                }
-            ?>
+            <?php endforeach; ?>
             </div>
         </section>
     </main>
 
     <footer>
-        <p>&copy; <?php echo date("Y"); ?> ReciclaCDMX - By Koneko </p>
+        <p>&copy; <?php echo date("Y"); ?> ReciclaCDMX - By Koneko</p>
     </footer>
 </body>
 </html>
