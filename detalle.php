@@ -1,4 +1,5 @@
 <?php
+    require_once 'includes/funciones.php';
 // 1. Declaración de variables 
 $tituloListado = "Especificaciones por Material";
 
@@ -24,28 +25,14 @@ $materiales = [
         "altaDemanda" => true
     ]
 ];
+$subtituloHeader = "Detalle de Materiales Reciclables";
+$tituloPagina = "Detalle de Materiales - ReciclaCDMX";
 ?>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Materiales - ReciclaCDMX</title>
-    <link rel="stylesheet" href="css/style.css">
-</head>
+    <?php require 'includes/head.php'; ?>
 <body>
-    <header>
-        <h1>ReciclaCDMX</h1>
-        <p>Detalle de Materiales Reciclables</p>
-    </header>
+    <?php include 'includes/header.php'; ?>
     
-    <nav>
-        <a href="index.php">Inicio</a>
-        <a href="consulta.php">Centros de Acopio</a>
-        <a href="detalle.php">Materiales</a>
-        <a href="guia.php">Guía de Separación</a>
-        <a href="recoleccion.php">Recolección a Domicilio</a>
-    </nav>
+    <?php include 'includes/nav.php'; ?>
 
     <main>
         <!-- Primer bloque de contenido -->
@@ -63,17 +50,13 @@ $materiales = [
                     <li style="margin-bottom: 10px;">
                         <strong><?php echo $item['tipo']; ?>:</strong> <?php echo $item['instrucciones']; ?>
                         
-                        <?php if ($item['altaDemanda']): ?>
-                            <span style="color: white; background-color: #d32f2f; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem;">¡Alta Demanda!</span>
-                        <?php endif; ?>
+                        <?php echo etiquetaAltaDemanda($item['altaDemanda']); ?>
                     </li>
                 <?php endforeach; ?>
             </ul>
         </section>
     </main>
 
-    <footer>
-        <p>&copy; <?php echo date("Y"); ?> ReciclaCDMX - By Koneko</p>
-    </footer>
+    <?php include 'includes/footer.php'; ?>
 </body>
 </html>

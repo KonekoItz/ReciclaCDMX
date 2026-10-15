@@ -1,4 +1,5 @@
 <?php
+    require_once 'includes/funciones.php';
 // 1. Declaración de variables y arreglos al inicio 
 $centrosAcopio = [
     [
@@ -61,28 +62,16 @@ foreach ($centrosAcopio as $centro) {
         $centrosFiltrados[] = $centro;
     }
 }
+
+$subtituloHeader = "Directorio de acopio y separación"; 
+$tituloPagina = "Centros de Acopio - ReciclaCDMX";
+
 ?>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Centros de Acopio - ReciclaCDMX</title>
-    <link rel="stylesheet" href="css/style.css">
-</head>
+    <?php require 'includes/head.php'; ?>
 <body>
-    <header>
-        <h1>ReciclaCDMX</h1>
-        <p>Directorio de acopio y separación</p>
-    </header>
+    <?php require 'includes/header.php'; ?>
     
-    <nav>
-        <a href="index.php">Inicio</a>
-        <a href="consulta.php">Centros de Acopio</a>
-        <a href="detalle.php">Materiales</a>
-        <a href="guia.php">Guía de Separación</a>
-        <a href="recoleccion.php">Recolección a Domicilio</a>
-    </nav>
+   <?php require 'includes/nav.php'; ?>
 
     <main>
         <!-- Primer bloque de contenido -->
@@ -118,19 +107,13 @@ foreach ($centrosAcopio as $centro) {
                         <p><strong>Teléfono:</strong> <?php echo $centro['telefono']; ?></p>
                         <p><strong>Mapa:</strong> <a href="<?php echo $centro['enlace_mapa']; ?>" target="_blank">Ver en el mapa</a></p>
                         
-                        <?php if ($centro['abierto']): ?>
-                            <p style="color: #2e7d32; font-weight: bold;">🟢 Abierto en este momento</p>
-                        <?php else: ?>
-                            <p style="color: #d32f2f; font-weight: bold;">🔴 Cerrado en este momento</p>
-                        <?php endif; ?>
+                       <?php echo mostrarEstadoCentro($centro['abierto']); ?>
                     </div>
                 <?php endforeach; ?>
             <?php endif; ?>
         </section>
     </main>
 
-    <footer>
-        <p>&copy; <?php echo date("Y"); ?> ReciclaCDMX - By Koneko</p>
-    </footer>
+    <?php require 'includes/footer.php'; ?>
 </body>
 </html>

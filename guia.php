@@ -1,4 +1,5 @@
 <?php
+    require_once 'includes/funciones.php';
 // 1. Declaración de variables 
 $categoriasBasura = [
     "Orgánicos" => "Verde",
@@ -6,28 +7,16 @@ $categoriasBasura = [
     "Inorgánicos No Reciclables" => "Naranja",
     "Manejo Especial y Voluminosos" => "Café"
 ];
+
+$subtituloHeader = "Norma Ambiental de Separación";
+$tituloPagina = "Guía de Separación - ReciclaCDMX";
+
 ?>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guía de Separación - ReciclaCDMX</title>
-    <link rel="stylesheet" href="css/style.css">
-</head>
+    <?php require 'includes/head.php'; ?>
 <body>
-    <header>
-        <h1>ReciclaCDMX</h1>
-        <p>Norma Ambiental de Separación</p>
-    </header>
+    <?php include 'includes/header.php'; ?>
     
-    <nav>
-        <a href="index.php">Inicio</a>
-        <a href="consulta.php">Centros de Acopio</a>
-        <a href="detalle.php">Materiales</a>
-        <a href="guia.php">Guía de Separación</a>
-        <a href="recoleccion.php">Recolección a Domicilio</a>
-    </nav>
+    <?php require 'includes/nav.php'; ?>
 
     <main>
         <!-- Primer bloque de contenido -->
@@ -41,19 +30,7 @@ $categoriasBasura = [
             <div style="display: flex; flex-wrap: wrap; gap: 15px;">
             <?php foreach ($categoriasBasura as $categoria => $color): ?>
                 
-                <?php 
-                    // Lógica condicional separada del HTML
-                    $hex = "#ccc";
-                    if ($color == "Verde") {
-                        $hex = "#81c784";
-                    } elseif ($color == "Gris") {
-                        $hex = "#9e9e9e";
-                    } elseif ($color == "Naranja") {
-                        $hex = "#ffb74d";
-                    } elseif ($color == "Café") {
-                        $hex = "#a1887f";
-                    }
-                ?>
+                <?php $hex = obtenerColorBote($color); ?>
                 
                 <!-- Tarjeta -->
                 <div style="background-color: <?php echo $hex; ?>; padding: 20px; border-radius: 8px; flex: 1; min-width: 200px; text-align: center; color: #fff; font-weight: bold;">
@@ -66,8 +43,6 @@ $categoriasBasura = [
         </section>
     </main>
 
-    <footer>
-        <p>&copy; <?php echo date("Y"); ?> ReciclaCDMX - By Koneko</p>
-    </footer>
+    <?php require 'includes/footer.php'; ?>
 </body>
 </html>

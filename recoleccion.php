@@ -1,57 +1,75 @@
 <?php
-            // Inicializamos variables
-            $mensajeError = "";
-            $formularioEnviado = false;
-            $nombre = "";
-            $telefono = "";
-            $direccion = "";
-            $motivo = "";
-            $dia = "";
-            $materiales = "";
+// Inicializamos variables para los campos
+$nombre = "";
+$telefono = "";
+$direccion = "";
+$motivo = "";
+$dia = "";
+$materiales = "";
 
-            // Verificamos si el formulario fue enviado por el método POST
-            if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                
-                // Validamos que los campos requeridos no estén vacíos usando empty() e isset()
-                if (empty($_POST["nombre"]) || empty($_POST["telefono"]) || empty($_POST["direccion"]) || empty($_POST["motivo"]) || empty($_POST["materiales"])) {
-                    $mensajeError = "Por favor, completa todos los campos obligatorios para procesar tu solicitud.";
-                } elseif (!isset($_POST["separados"])) {
-                    // Validamos la regla estricta de que confirmen la separación
-                    $mensajeError = "Debes confirmar que los artículos están perfectamente separados.";
-                } else {
-                    // Si todo está correcto, sanitizamos los datos con htmlspecialchars() por seguridad
-                    $nombre = htmlspecialchars($_POST["nombre"]);
-                    $telefono = htmlspecialchars($_POST["telefono"]);
-                    $direccion = htmlspecialchars($_POST["direccion"]);
-                    $motivo = htmlspecialchars($_POST["motivo"]);
-                    $dia = htmlspecialchars($_POST["dia"]);
-                    $materiales = htmlspecialchars($_POST["materiales"]);
-                    
-                    $formularioEnviado = true;
-                }
-            }
-            ?>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recolección a Domicilio - ReciclaCDMX</title>
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-    <header>
-        <h1>ReciclaCDMX</h1>
-        <p>Programa de Recolección Especial a Domicilio</p>
-    </header>
+// Inicializamos las variables de los mensajes y banderas
+$mensajeError = "";
+$formularioEnviado = false;
+
+// Verificamos si el formulario fue enviado por el método POST
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    // Capturamos y sanitizamos los datos de entrada inmediatamente (usamos trim para limpiar espacios en blanco)
+    $nombre = htmlspecialchars(trim($_POST["nombre"]));
+    $telefono = trim($_POST["telefono"]); 
+    $direccion = htmlspecialchars(trim($_POST["direccion"]));
+    $motivo = isset($_POST["motivo"]) ? htmlspecialchars($_POST["motivo"]) : "";
+    $dia = isset($_POST["dia"]) ? htmlspecialchars($_POST["dia"]) : "";
+    $materiales = htmlspecialchars(trim($_POST["materiales"]));
+
+    // Validaciones  
     
-    <nav>
-        <a href="index.php">Inicio</a>
-        <a href="consulta.php">Centros de Acopio</a>
-        <a href="detalle.php">Materiales</a>
-        <a href="guia.php">Guía de Separación</a>
-        <a href="recoleccion.php">Recolección a Domicilio</a>
-    </nav>
+    // Verificar que se llenaron los campos, pero además que tengan sentido
+    if (empty($nombre) || strlen($nombre) < 3) {
+        $mensajeError .= "Error: El nombre debe tener al menos 3 caracteres.<br>";
+    }
+    
+    // Validar telefono de 10 numeros
+    if (empty($telefono) || !preg_match("/^[0-9]{10}$/", $telefono)) {
+        $mensajeError .= "Error: El teléfono debe contener exactamente 10 números, sin letras ni espacios.<br>";
+    }
+    
+    // validar direccion de al menos 35 caracteres
+    if (empty($direccion) || strlen($direccion) < 35) {
+        $mensajeError .= "Error: Ingresa una dirección completa.<br>";
+    }
+    
+    // Verificar los campos de selección obligatorios
+    if (empty($motivo)) {
+        $mensajeError .= "Error: Selecciona el motivo de la solicitud especial.<br>";
+    }
+    
+    // Validar que escriban materiales reales
+    if (empty($materiales) || strlen($materiales) < 10) {
+        $mensajeError .= "Error: Especifica correctamente los materiales que vas a entregar.<br>";
+    }
+
+    // Validar la regla de separación de la rúbrica
+    if (!isset($_POST["separados"])) {
+        $mensajeError .= "Error: Debes confirmar que los artículos están perfectamente separados.<br>";
+    }
+
+    // Si la variable $mensajeError sigue vacía después de pasar todo el chequeo, entonces el formulario se considera enviado correctamente
+    if (empty($mensajeError)) {
+        $formularioEnviado = true;
+    }
+}
+
+// Variables dinámicas para las partes visuales (Head y Header)
+$subtituloHeader = "Programa de Recolección Especial a Domicilio";
+$tituloPagina = "Solicitud de Recolección Especial - ReciclaCDMX";
+?>
+<!-- Mandamos llamar el inicio del HTML (head) -->
+<?php require 'includes/head.php'; ?>
+<body>
+    <?php include 'includes/header.php'; ?>
+    
+    <?php include 'includes/nav.php'; ?>
 
     <main>
         <section>
@@ -114,9 +132,6 @@
         </section>
     </main>
 
-    <footer>
-                <!-- pie de pagina, Respondiendo su duda utilizo "Y" para que aparezca el año completo 2026 con "y" minuscula apareceria unicamente 26 y eso se ve mas informal a mi parecer   -->
-        <p>&copy; <?php echo date("Y"); ?> ReciclaCDMX - By Koneko </p>
-    </footer>
+   <?php require 'includes/footer.php'; ?>
 </body>
 </html>

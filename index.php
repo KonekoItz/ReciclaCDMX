@@ -2,28 +2,18 @@
 // 1. Declaración de variables 
 $campanaActiva = true;
 $nombreCampana = "Campaña de colecta y reciclaje para los peluditos de nuestros hogares y refugios";
+
+// 2. Variables dinámicas para las partes visuales (Head y Header)
+$tituloPagina = "Inicio - ReciclaCDMX";
+$subtituloHeader = "Tu guía oficial para la separación y reciclaje de la CDMX";
 ?>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio - ReciclaCDMX</title>
-    <link rel="stylesheet" href="css/style.css">
-</head>
+    <!-- Mandamos llamar el inicio del HTML (head) -->
+    <?php require 'includes/head.php'; ?>
 <body>
-    <header>
-        <h1>ReciclaCDMX</h1>
-        <p>Tu guía oficial para la separación y reciclaje de residuos en la Ciudad de México</p>
-    </header>
-    
-    <nav>
-        <a href="index.php">Inicio</a>
-        <a href="consulta.php">Centros de Acopio</a>
-        <a href="detalle.php">Materiales</a>
-        <a href="guia.php">Guía de Separación</a>
-        <a href="recoleccion.php">Recolección a Domicilio</a>
-    </nav>
+    <?php include 'includes/header.php'; ?>
+
+    <!-- reemplazamos nav por include -->
+   <?php include 'includes/nav.php'; ?>
 
     <main>
         <!-- Primer bloque de contenido -->
@@ -53,8 +43,8 @@ $nombreCampana = "Campaña de colecta y reciclaje para los peluditos de nuestros
         </section>
     </main>
 
-    <footer>
-        <p>&copy; <?php echo date("Y"); ?> ReciclaCDMX - By Koneko</p>
-    </footer>
+     <!-- reemplazamos el footer por include -->
+    <?php include 'includes/footer.php'; ?>
+
 </body>
 </html>
