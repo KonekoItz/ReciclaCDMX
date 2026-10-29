@@ -1,4 +1,14 @@
 <?php
+// 0. Clave para que la página recuerde la sesión, siempre debe ir en la línea 2
+session_start(); 
+
+// PROTECCIÓN DE RUTA 
+// Si el usuario NO tiene una sesión activa, lo pateamos a la página de login
+if (!isset($_SESSION['sesion_activa']) || $_SESSION['sesion_activa'] !== true) {
+    header("Location: login.php");
+    exit(); // Detenemos la ejecución para que no cargue el resto de la página
+}
+
 // Inicializamos variables para los campos
 $nombre = "";
 $telefono = "";

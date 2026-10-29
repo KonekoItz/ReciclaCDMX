@@ -1,4 +1,6 @@
 <?php
+// 0. Clave para que la página recuerde la sesión
+session_start(); 
 // 1. Declaración de variables 
 $campanaActiva = true;
 $nombreCampana = "Campaña de colecta y reciclaje para los peluditos de nuestros hogares y refugios";

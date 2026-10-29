@@ -1,4 +1,6 @@
 <?php
+// 0. Clave para que la página recuerde la sesión
+session_start();
 // Variables iniciales
 $mensajeRegistro = "";
 $esExito = false; // Nos ayudará a saber si pintamos el mensaje de verde o rojo

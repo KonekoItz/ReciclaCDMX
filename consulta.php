@@ -1,4 +1,6 @@
 <?php
+// 0. Clave para que la página recuerde la sesión
+session_start(); 
     require_once 'includes/funciones.php';
 // 1. Declaración de variables y arreglos al inicio 
 $centrosAcopio = [
