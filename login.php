@@ -1,12 +1,7 @@
 <?php
-// INICIO DE SESIÓN: Obligatorio llamar a session_start() antes de cualquier salida HTML para manejar variables de sesión.
+// Iniciamos sesión e incluimos la conexión a MySQL
 session_start();
-
-// USUARIOS FICTICIOS: Definimos un arreglo temporal para simular una base de datos (Requisito Tarea 5).
-$usuarios_ficticios = [
-    'usuario@recicla.com' => ['password' => '12345', 'rol' => 'registrado', 'nombre' => 'MichiReciclador'],
-    'admin@recicla.com' => ['password' => 'admin2026', 'rol' => 'administrador', 'nombre' => 'ItzaAdmin']
-];
+require 'includes/conexion.php';
 
 $mensajeError = "";
 
@@ -15,30 +10,46 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $correo = trim($_POST["correo"]);
     $password = trim($_POST["password"]);
     
-    // Verificamos si el correo existe en nuestros usuarios ficticios y la contraseña coincide
-    if (array_key_exists($correo, $usuarios_ficticios) && $usuarios_ficticios[$correo]['password'] == $password) {
+    // Buscamos al usuario por su correo usando una consulta preparada
+    $stmt = $conexion->prepare("SELECT id_usuario, nombre, password, rol FROM usuarios WHERE correo = ?");
+    $stmt->bind_param("s", $correo);
+    $stmt->execute();
+    $stmt->store_result();
+    
+    // Si encontramos el correo en la base de datos
+    if ($stmt->num_rows > 0) {
+        // Extraemos los datos del usuario
+        $stmt->bind_result($id_usuario, $nombre_db, $password_db, $rol_db);
+        $stmt->fetch();
         
-        // SESIONES: Guardamos los datos del usuario en la sesión activa
-        $_SESSION['sesion_activa'] = true;
-        $_SESSION['correo'] = $correo;
-        $_SESSION['rol'] = $usuarios_ficticios[$correo]['rol'];
-        $_SESSION['nombre'] = $usuarios_ficticios[$correo]['nombre'];
-        
-        // COOKIES: Lógica para recordar el correo si el usuario marcó la casilla
-        if (isset($_POST["recordarme"])) {
-            // Creamos la cookie 'correo_recordado' que durará 30 días
-            setcookie('correo_recordado', $correo, time() + (86400 * 30), "/");
+        // Verificamos que la contraseña ingresada coincida con el hash de MySQL
+        if (password_verify($password, $password_db)) {
+            
+            // SESIONES: Guardamos los datos reales extraídos de MySQL
+            $_SESSION['sesion_activa'] = true;
+            $_SESSION['id_usuario'] = $id_usuario; // Guardamos el ID único de la base de datos
+            $_SESSION['correo'] = $correo;
+            $_SESSION['rol'] = $rol_db;
+            $_SESSION['nombre'] = $nombre_db;
+            
+            // COOKIES: Mantenemos la lógica de la Tarea 5 intacta
+            if (isset($_POST["recordarme"])) {
+                setcookie('correo_recordado', $correo, time() + (86400 * 30), "/");
+            } else {
+                setcookie('correo_recordado', '', time() - 3600, "/");
+            }
+            
+            // Redirigimos al inicio tras un login exitoso
+            header("Location: index.php");
+            exit();
         } else {
-            // Si desmarcó la casilla, destruimos la cookie poniéndole un tiempo en el pasado
-            setcookie('correo_recordado', '', time() - 3600, "/");
+            $mensajeError = "Credenciales incorrectas. Verifica tu contraseña.";
         }
-        
-        // Redirigimos al inicio tras un login exitoso
-        header("Location: index.php");
-        exit();
     } else {
-        $mensajeError = "Credenciales incorrectas. Verifica tu correo y contraseña.";
+        $mensajeError = "Credenciales incorrectas. El correo no se encuentra registrado.";
     }
+    
+    $stmt->close();
 }
 
 // RECUPERACIÓN DE COOKIE: Verificamos si existe la cookie para pre-llenar el formulario
@@ -48,7 +59,6 @@ $correoGuardado = isset($_COOKIE['correo_recordado']) ? $_COOKIE['correo_recorda
 $tituloPagina = "Iniciar Sesión - ReciclaCDMX";
 $subtituloHeader = "Accede a tu cuenta para gestionar tus recolecciones";
 ?>
-<!-- Reutilización de código -->
 <?php require 'includes/head.php'; ?>
 <body>
     <?php require 'includes/header.php'; ?>
@@ -66,14 +76,12 @@ $subtituloHeader = "Accede a tu cuenta para gestionar tus recolecciones";
 
             <form action="login.php" method="POST" style="display: flex; flex-direction: column; gap: 15px;">
                 <label for="correo" style="font-weight: bold;">Correo Electrónico:</label>
-                <!-- Usamos el valor de la cookie para pre-llenar este campo si existe -->
                 <input type="email" id="correo" name="correo" value="<?php echo $correoGuardado; ?>" required style="padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
                 
                 <label for="password" style="font-weight: bold;">Contraseña:</label>
                 <input type="password" id="password" name="password" required style="padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
                 
                 <div style="display: flex; align-items: center; gap: 10px;">
-                    <!-- Marcamos el checkbox automáticamente si la cookie existe -->
                     <input type="checkbox" id="recordarme" name="recordarme" <?php echo ($correoGuardado != "") ? "checked" : ""; ?>>
                     <label for="recordarme">Recordar mi correo en este equipo</label>
                 </div>

@@ -1,35 +1,61 @@
 <?php
-// 0. Clave para que la página recuerde la sesión
 session_start();
-// Variables iniciales
+require_once 'includes/conexion.php'; // Requisito: Conectar con MySQL
+
 $mensajeRegistro = "";
-$esExito = false; // Nos ayudará a saber si pintamos el mensaje de verde o rojo
+$esExito = false;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Limpiamos los datos
+    // Sanitizamos las entradas
     $nombre = htmlspecialchars(trim($_POST["nombre"]));
     $correo = htmlspecialchars(trim($_POST["correo"]));
+    $password = trim($_POST["password"]);
 
-    //  Nombre de al menos 3 caracteres
+    // Validaciones básicas de QA
     if (empty($nombre) || strlen($nombre) < 3) {
         $mensajeRegistro = "Error: El nombre o alias debe tener al menos 3 caracteres.";
-    } 
-    // Correo electrónico con formato real
-    elseif (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
-        $mensajeRegistro = "Error: Ingresa un correo electrónico válido (ejemplo@correo.com).";
-    } 
-    // Si pasa todas las pruebas
-    else {
-        $esExito = true;
-        $mensajeRegistro = "¡Bienvenida/o a la comunidad ReciclaCDMX, " . $nombre . "! Tu registro fue exitoso.";
+    } elseif (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
+        $mensajeRegistro = "Error: Ingresa un correo electrónico válido.";
+    } elseif (empty($password) || strlen($password) < 5) {
+        $mensajeRegistro = "Error: La contraseña debe tener al menos 5 caracteres.";
+    } else {
+        
+        // Verificamos que el correo no esté registrado previamente usando una consulta preparada 
+        $sql_verificar = "SELECT id_usuario FROM usuarios WHERE correo = ?";
+        $stmt_verificar = $conexion->prepare($sql_verificar);
+        $stmt_verificar->bind_param("s", $correo);
+        $stmt_verificar->execute();
+        $stmt_verificar->store_result();
+
+        if ($stmt_verificar->num_rows > 0) {
+            $mensajeRegistro = "Error: Este correo electrónico ya está registrado.";
+        } else {
+            // Protegemos la contraseña encriptándola antes de guardarla 
+            $password_encriptada = password_hash($password, PASSWORD_DEFAULT);
+            
+            // Asignamos el rol por defecto (Los administradores no se crean desde aquí por seguridad)
+            $rol = "registrado";
+
+            // Guardamos al usuario en MySQL mediante una consulta preparada 
+            $sql_insertar = "INSERT INTO usuarios (nombre, correo, password, rol) VALUES (?, ?, ?, ?)";
+            $stmt_insertar = $conexion->prepare($sql_insertar);
+            $stmt_insertar->bind_param("ssss", $nombre, $correo, $password_encriptada, $rol);
+            
+            if ($stmt_insertar->execute()) {
+                $esExito = true;
+                $mensajeRegistro = "¡Bienvenida/o a la comunidad ReciclaCDMX, $nombre! Tu registro fue exitoso.";
+            } else {
+                $mensajeRegistro = "Hubo un error al registrar. Inténtalo más tarde.";
+            }
+            $stmt_insertar->close();
+        }
+        $stmt_verificar->close();
     }
 }
 
-// Variables dinámicas para el encabezado
+// Variables dinámicas
 $tituloPagina = "Registro - ReciclaCDMX";
 $subtituloHeader = "Únete a nuestra comunidad del reciclaje";
-?>
-
 ?>
     <?php require 'includes/head.php'; ?>
 <body>
@@ -58,10 +84,14 @@ $subtituloHeader = "Únete a nuestra comunidad del reciclaje";
 
             <form action="registro.php" method="POST" style="display: flex; flex-direction: column; gap: 15px; max-width: 400px; margin-top: 20px;">
                 <label for="nombre" style="font-weight: bold;">Nombre o Alias:</label>
-                <input type="text" id="nombre" name="nombre" placeholder="Ej. MichiReciclador" style="padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+                <input type="text" id="nombre" name="nombre" placeholder="Ej. MichiReciclador" required style="padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
                 
                 <label for="correo" style="font-weight: bold;">Correo Electrónico:</label>
-                <input type="email" id="correo" name="correo" placeholder="tu@correo.com" style="padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+                <input type="email" id="correo" name="correo" placeholder="tu@correo.com" required style="padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+                
+                <!-- Nuevo campo de contraseña -->
+                <label for="password" style="font-weight: bold;">Contraseña:</label>
+                <input type="password" id="password" name="password" required style="padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
                 
                 <button type="submit" style="background-color: #2e7d32; color: white; padding: 10px 20px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">Registrarme</button>
             </form>
