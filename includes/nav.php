@@ -11,21 +11,22 @@ $nombre_usuario = isset($_SESSION['nombre']) ? $_SESSION['nombre'] : '';
     <a href="guia.php">Guía de Separación</a>
     
     <?php if ($sesion_activa): ?>
-        <!-- BOTONES PARA USUARIOS LOGUEADOS -->
-        <a href="recoleccion.php">Recolección a Domicilio</a>
         
         <?php if ($rol == 'administrador'): ?>
             <!-- Botón exclusivo para el administrador -->
-            <a href="#" style="color: #ffb74d;">Panel Admin</a>
+            <a href="panel_admin.php" style="color: #ffb74d; font-weight: bold;">Panel Admin</a>
+        <?php else: ?>
+            <!-- BOTON EXCLUSIVO PARA USUARIOS NORMALES LOGUEADOS -->
+            <a href="recoleccion.php">Recolección a Domicilio</a>
         <?php endif; ?>
         
-        <!-- Saludo y botón de salir -->
-        <span style="color: white; font-weight: bold; margin-left: 20px;">¡Hola, <?php echo $nombre_usuario; ?>!</span>
-        <a href="logout.php" style="background-color: #e98890; padding: 5px 10px; border-radius: 5px;">Cerrar Sesión</a>
+        <!-- Saludo y botón de salir para ambos -->
+        <span style="color: white; font-weight: bold; margin-left: 20px;">¡Hola, <?php echo htmlspecialchars($nombre_usuario); ?>!</span>
+        <a href="logout.php" style="background-color: #d32f2f; padding: 5px 10px; border-radius: 5px;">Cerrar Sesión</a>
 
     <?php else: ?>
         <!-- BOTONES PARA VISITANTES (No logueados) -->
         <a href="registro.php">Registro</a>
-        <a href="login.php" style="background-color: #96e1e4; color: #2e7d32; padding: 5px 10px; border-radius: 5px; font-weight: bold;">Iniciar Sesión</a>
+        <a href="login.php" style="background-color: #ffb74d; color: #2e7d32; padding: 5px 10px; border-radius: 5px; font-weight: bold;">Iniciar Sesión</a>
     <?php endif; ?>
 </nav>
